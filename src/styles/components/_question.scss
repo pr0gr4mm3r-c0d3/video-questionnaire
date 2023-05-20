@@ -1,0 +1,15 @@
+.card__question {
+	height: 100%;
+	min-width: 300px;
+	background: lighten($color: $colorDark, $amount: 5);
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	&-content {
+		height: calc(100% - 80px);
+	}
+	&-footer {
+		padding: 15px;
+	}
+}

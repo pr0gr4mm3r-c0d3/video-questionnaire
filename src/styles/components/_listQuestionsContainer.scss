@@ -1,0 +1,12 @@
+.list__questions-container {
+	background: darken($color: $colorDark, $amount: 0.8);
+	border-radius: 25px;
+	display: flex !important;
+	gap: 15px;
+	flex-wrap: wrap;
+	height: calc(100vh - 250px);
+	justify-content: space-around;
+	align-items: flex-start;
+	padding: 20px;
+	overflow: auto;
+}
