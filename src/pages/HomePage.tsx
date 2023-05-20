@@ -1,7 +1,7 @@
 import { BtnComponent, ListQuestions, Title } from '@/components';
 import { Container } from '@mui/material';
 
-export const App = () => {
+export const HomePage = () => {
 	return (
 		<Container maxWidth='xl' className='app__container'>
 			<Title />
