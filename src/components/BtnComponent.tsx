@@ -5,15 +5,24 @@ interface IBtnProps {
 	label: string;
 	variant?: 'contained' | 'outlined';
 	color?: 'error' | 'primary' | 'success';
+	[key: string]: unknown;
 }
 
 export const BtnComponent = ({
 	label,
 	variant = 'contained',
 	color = 'error',
+	...props
 }: IBtnProps) => {
 	return (
-		<Button variant={variant} color={color} size='large'>
+		// eslint-disable-next-line prettier/prettier
+		<Button
+			size='large'
+			variant={variant}
+			color={color}
+			// eslint-disable-next-line react/jsx-props-no-spreading
+			{...props}
+		>
 			{label}
 		</Button>
 	);
