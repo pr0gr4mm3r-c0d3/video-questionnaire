@@ -1,14 +1,17 @@
 import { BtnComponent, ListQuestions, Title } from '@/components';
-import { Container } from '@mui/material';
+import { QuestionsContext } from '@/context';
+import { useContext } from 'react';
 
 export const HomePage = () => {
+	const { questions } = useContext(QuestionsContext);
+	const disabledBtn = () => questions.some(({ done }) => done === false);
 	return (
-		<Container maxWidth='xl' className='app__container'>
+		<>
 			<Title />
 			<ListQuestions />
 			<footer className='app__footer'>
-				<BtnComponent label='Enviar' />
+				<BtnComponent disabled={disabledBtn()} label='Enviar' />
 			</footer>
-		</Container>
+		</>
 	);
 };
