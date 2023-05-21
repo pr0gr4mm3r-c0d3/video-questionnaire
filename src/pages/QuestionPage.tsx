@@ -8,12 +8,16 @@ export const QuestionPage = () => {
 	const { questionId } = useParams();
 	const { questions } = useContext(QuestionsContext);
 	const navigate = useNavigate();
+	const handleBackToHome = () => navigate('/');
 	const handleBackOrNextQuestion = (step: 'PREVIOUS' | 'NEXT') => {
 		const prev = questionId && findNextOrPrevious(questions, questionId, step);
 		if (prev) navigate(`/question/${prev.id}`);
 	};
 	return (
 		<section>
+			<header>
+				<BtnComponent label='Ir a Preguntas' color='primary' onClick={handleBackToHome} />
+			</header>
 			<h3>Question Page: {questionId}</h3>
 			<footer>
 				<BtnComponent
