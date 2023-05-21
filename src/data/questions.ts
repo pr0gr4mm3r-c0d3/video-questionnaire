@@ -3,7 +3,7 @@ import { IQuestion } from '@/interfaces';
 export const questions: IQuestion[] = [
 	{
 		id: 'IdQuestion1',
-		done: false,
+		done: true,
 		question: 'Some Question - 1 ?',
 	},
 	{
