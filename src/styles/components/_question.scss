@@ -8,8 +8,61 @@
 	justify-content: space-between;
 	&-content {
 		height: calc(100% - 80px);
+		width: 100%;
+		position: relative;
+		&-video,
+		&-notVideo {
+			background: darken($color: $colorDark, $amount: 4);
+			border-radius: 25px;
+			position: relative;
+			height: 100%;
+			min-width: 100%;
+		}
+		&-notVideo {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: $colorRed;
+			padding: 25px;
+		}
+		&-btn {
+			position: relative;
+			bottom: 120px;
+			left: 25px;
+		}
 	}
 	&-footer {
 		padding: 15px;
+	}
+}
+
+.questionPage__container {
+	min-height: calc(100vh - 50px);
+	position: relative;
+	.questionPage__content {
+		&,
+		&-footer {
+			display: flex;
+			align-items: center;
+		}
+		flex-direction: column;
+		justify-content: space-between;
+		height: 70vh;
+		margin: 25px 15px;
+		.card__question {
+			max-height: 600px;
+		}
+		&-footer {
+			width: 100%;
+			max-width: 300px;
+			display: flex;
+			justify-content: space-between;
+		}
+	}
+}
+
+@media screen and (min-width: 900px) {
+	.card__question {
+		max-width: 400px;
 	}
 }
