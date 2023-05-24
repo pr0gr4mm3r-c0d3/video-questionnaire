@@ -1,1 +1,3 @@
-export * from './questionsContext';
+export * from './QuestionsContext';
+export * from './QuestionsReducer';
+export * from './QuestionsProvider';
