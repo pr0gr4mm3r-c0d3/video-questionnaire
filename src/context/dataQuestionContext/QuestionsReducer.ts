@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { QuestionContextProps, QuestionsState } from './QuestionsContext';
+import {  QuestionsState } from './QuestionsContext';
 
 export const TYPE_QUESTIONS_CONTEXT_ACTIONS = {
 	UPDATE_QUESTION: 'UPDATE_QUESTION',

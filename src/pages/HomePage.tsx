@@ -3,8 +3,8 @@ import { QuestionsContext } from '@/context';
 import { useContext } from 'react';
 
 export const HomePage = () => {
-	const { questions } = useContext(QuestionsContext);
-	const disabledBtn = () => questions.some(({ done }) => done === false);
+	const { questionsState } = useContext(QuestionsContext);
+	const disabledBtn = () => questionsState.questions.some(({ done }) => done === false);
 	return (
 		<>
 			<Title />

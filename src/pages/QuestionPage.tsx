@@ -1,36 +1,53 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { BtnComponent } from '@/components';
-import { useContext } from 'react';
+import { BtnComponent, Question } from '@/components';
+import { useContext, useEffect, useState } from 'react';
 import { QuestionsContext } from '@/context';
 import { findNextOrPrevious } from '@/helpers';
+import { IQuestion } from '@/interfaces';
 
 export const QuestionPage = () => {
+	const [currentQuestion, setCurrentQuestion] = useState<IQuestion>();
+	const [nextOrPrevious, setNextOrPrevious] = useState<IQuestion>();
 	const { questionId } = useParams();
-	const { questions } = useContext(QuestionsContext);
+	const { questionsState } = useContext(QuestionsContext);
 	const navigate = useNavigate();
 	const handleBackToHome = () => navigate('/');
 	const handleBackOrNextQuestion = (step: 'PREVIOUS' | 'NEXT') => {
-		const prev = questionId && findNextOrPrevious(questions, questionId, step);
-		if (prev) navigate(`/question/${prev.id}`);
+		const nextOrPrev = questionId && findNextOrPrevious(questionsState.questions, questionId, step);
+		if (nextOrPrev && nextOrPrev.id !== questionId) {
+			setCurrentQuestion(nextOrPrev);
+			navigate(`/question/${nextOrPrev.id}`);
+		}
 	};
+	useEffect(() => {
+		const findQuestion = questionsState.questions.find(({ id }) => id === questionId);
+		if (findQuestion) setCurrentQuestion(findQuestion);
+		const next = questionId && findNextOrPrevious(questionsState.questions, questionId, 'NEXT');
+		setNextOrPrevious(next || undefined);
+	}, [questionId, questionsState]);
+
 	return (
-		<section>
+		<section className='questionPage__container'>
 			<header>
 				<BtnComponent label='Ir a Preguntas' color='primary' onClick={handleBackToHome} />
 			</header>
-			<h3>Question Page: {questionId}</h3>
-			<footer>
-				<BtnComponent
-					label='Atrás'
-					color='success'
-					onClick={() => handleBackOrNextQuestion('PREVIOUS')}
-				/>
-				<BtnComponent
-					label='Siguiente'
-					color='success'
-					onClick={() => handleBackOrNextQuestion('NEXT')}
-				/>
-			</footer>
+			<article className='questionPage__content'>
+				{currentQuestion && <Question controls question={currentQuestion} />}
+				<footer className='questionPage__content-footer'>
+					<BtnComponent
+						disabled={!nextOrPrevious}
+						label='Atrás'
+						color='success'
+						onClick={() => handleBackOrNextQuestion('PREVIOUS')}
+					/>
+					<BtnComponent
+						label={!nextOrPrevious ? 'Enviar' : 'Siguiente'}
+						color='success'
+						disabled={!nextOrPrevious && questionsState.questions.some(({ done }) => done === false)}
+						onClick={() => handleBackOrNextQuestion('NEXT')}
+					/>
+				</footer>
+			</article>
 		</section>
 	);
 };
