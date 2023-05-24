@@ -55,7 +55,7 @@
 		"prettier/prettier": [
 			"error",
 			{
-				"printWidth": 100,
+				"printWidth": 120,
 				"endOfLine": "lf",
 				"jsxSingleQuote": true,
 				"singleQuote": true,
