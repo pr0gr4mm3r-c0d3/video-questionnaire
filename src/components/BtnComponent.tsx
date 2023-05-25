@@ -8,12 +8,7 @@ interface IBtnProps {
 	[key: string]: unknown;
 }
 
-export const BtnComponent = ({
-	label,
-	variant = 'contained',
-	color = 'error',
-	...props
-}: IBtnProps) => {
+export const BtnComponent = ({ label, variant = 'contained', color = 'error', ...props }: IBtnProps) => {
 	return (
 		// eslint-disable-next-line prettier/prettier
 		<Button

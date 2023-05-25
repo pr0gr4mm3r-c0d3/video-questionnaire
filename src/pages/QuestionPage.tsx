@@ -1,15 +1,17 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { BtnComponent, Question } from '@/components';
 import { useContext, useEffect, useState } from 'react';
-import { QuestionsContext } from '@/context';
+import { QuestionsContext, UIContext } from '@/context';
 import { findNextOrPrevious } from '@/helpers';
 import { IQuestion } from '@/interfaces';
+import { BtnSend } from '@/components/dialog';
 
 export const QuestionPage = () => {
 	const [currentQuestion, setCurrentQuestion] = useState<IQuestion>();
 	const [nextOrPrevious, setNextOrPrevious] = useState<IQuestion>();
 	const { questionId } = useParams();
 	const { questionsState } = useContext(QuestionsContext);
+	const { uiState } = useContext(UIContext);
 	const navigate = useNavigate();
 	const handleBackToHome = () => navigate('/');
 	const handleBackOrNextQuestion = (step: 'PREVIOUS' | 'NEXT') => {
@@ -35,17 +37,20 @@ export const QuestionPage = () => {
 				{currentQuestion && <Question controls question={currentQuestion} />}
 				<footer className='questionPage__content-footer'>
 					<BtnComponent
-						disabled={!nextOrPrevious}
+						disabled={!nextOrPrevious || uiState.recording}
 						label='Atrás'
 						color='success'
 						onClick={() => handleBackOrNextQuestion('PREVIOUS')}
 					/>
-					<BtnComponent
-						label={!nextOrPrevious ? 'Enviar' : 'Siguiente'}
-						color='success'
-						disabled={!nextOrPrevious && questionsState.questions.some(({ done }) => done === false)}
-						onClick={() => handleBackOrNextQuestion('NEXT')}
-					/>
+					{!nextOrPrevious && <BtnSend />}
+					{nextOrPrevious && (
+						<BtnComponent
+							disabled={uiState.recording}
+							label='Siguiente'
+							color='success'
+							onClick={() => handleBackOrNextQuestion('NEXT')}
+						/>
+					)}
 				</footer>
 			</article>
 		</section>

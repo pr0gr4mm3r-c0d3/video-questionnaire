@@ -1,6 +1,8 @@
-import { ICON_STATUS } from '@/enums';
+import { ERROR_MESSAGES, ICON_STATUS } from '@/enums';
 import { BtnIconStatus, HandleActionBtnVideo } from '@/types';
-import { RefObject, useRef, useState } from 'react';
+import { RefObject, useContext, useRef, useState } from 'react';
+import { UIContext } from '@/context';
+import { useHandleError } from './useHanldeError';
 
 const constraints: MediaStreamConstraints = {
 	video: true,
@@ -15,18 +17,25 @@ export const useWebRTC = (videoSrc: string) => {
 	const [iconStatus, setIconStatus] = useState<BtnIconStatus>(ICON_STATUS.PLAY);
 	const [showVideoElement, setShowVideoElement] = useState<boolean>(!!videoSrc);
 	const [videoData, setVideoData] = useState<string | null>(null);
+	const { handleError } = useHandleError();
+	const { setRecording } = useContext(UIContext);
 	const videoRef: RefObject<HTMLVideoElement> = useRef(null);
 	const limitTimeVideo = 120000;
 	const initMediaRecorder = async (): Promise<void> => {
-		setShowVideoElement(true);
-		recordedChunks = [];
-		stream = await navigator.mediaDevices.getUserMedia(constraints);
-		if (!stream) throw new Error('Revisa los permisos de tu navegador');
-		if (!videoRef.current) throw new Error('Revisa los permisos de tu navegador');
-		videoRef.current.srcObject = stream;
-		videoRef.current.controls = false;
-		await videoRef.current.play();
-		mediaRecorder = new MediaRecorder(stream);
+		try {
+			setShowVideoElement(true);
+			recordedChunks = [];
+			stream = await navigator.mediaDevices.getUserMedia(constraints);
+			if (!stream) throw Error(ERROR_MESSAGES.NOT_PERMISSIONS);
+			if (!videoRef.current) throw Error(ERROR_MESSAGES.VIDEO_REF);
+			videoRef.current.srcObject = stream;
+			videoRef.current.controls = false;
+			await videoRef.current.play();
+			mediaRecorder = new MediaRecorder(stream);
+		} catch (err: unknown) {
+			setShowVideoElement(false);
+			handleError({ message: ERROR_MESSAGES.NOT_PERMISSIONS });
+		}
 	};
 
 	const dataAvailableListener = () => {
@@ -47,25 +56,29 @@ export const useWebRTC = (videoSrc: string) => {
 			videoRef.current.srcObject = null;
 			videoRef.current.controls = true;
 			setVideoData(srcVideo);
+			setRecording(false);
 		};
 	};
 
-	const recorder = async () => {
+	const recorder = async (): Promise<boolean> => {
 		await initMediaRecorder();
-		if (!mediaRecorder) return;
+		if (!mediaRecorder) return false;
+		setRecording(true);
 		dataAvailableListener();
 		onStopListener();
 		mediaRecorder.start();
 		timeOutId = setTimeout(() => {
 			mediaRecorder.stop();
 		}, limitTimeVideo);
+		return true;
 	};
 
 	const handleStartRecord = () => {
-		recorder().catch((err) => {
-			console.log(err);
-		});
-		setIconStatus(ICON_STATUS.STOP);
+		recorder()
+			.then((success) => {
+				if (success) setIconStatus(ICON_STATUS.STOP);
+			})
+			.catch((err) => handleError(err));
 	};
 	const handleStopRecord = () => {
 		clearTimeout(timeOutId);

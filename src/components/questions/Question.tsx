@@ -21,7 +21,11 @@ export const Question = ({ question, controls = false }: IQuestionProps) => {
 			</div>
 			<footer className='card__question-footer'>
 				<p>{question.question}</p>
-				{!controls && <BtnComponent onClick={handleClickToQuestion} label='Responder' color='success' />}
+				{!controls && (
+					<div className='card__question-footer-containerBtn'>
+						<BtnComponent onClick={handleClickToQuestion} label='Responder' color='success' />
+					</div>
+				)}
 			</footer>
 		</section>
 	);

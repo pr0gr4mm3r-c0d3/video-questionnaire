@@ -1,16 +1,13 @@
-import { BtnComponent, ListQuestions, Title } from '@/components';
-import { QuestionsContext } from '@/context';
-import { useContext } from 'react';
+import { ListQuestions, Title } from '@/components';
+import { BtnSend } from '@/components/dialog';
 
 export const HomePage = () => {
-	const { questionsState } = useContext(QuestionsContext);
-	const disabledBtn = () => questionsState.questions.some(({ done }) => done === false);
 	return (
 		<>
 			<Title />
 			<ListQuestions />
 			<footer className='app__footer'>
-				<BtnComponent disabled={disabledBtn()} label='Enviar' />
+				<BtnSend />
 			</footer>
 		</>
 	);

@@ -39,7 +39,7 @@ export const VideoQuestion = ({ videoSrc, controls }: VideoProps) => {
 				</div>
 			)}
 			{controls && (
-				<Fab color='primary' className='card__question-content-btn' onClick={handleClick[iconStatus]}>
+				<Fab color='primary' className='card__question-content-fab' onClick={handleClick[iconStatus]}>
 					<Icon iconStatus={iconStatus} />
 				</Fab>
 			)}
