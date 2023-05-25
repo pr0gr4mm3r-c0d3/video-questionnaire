@@ -12,7 +12,7 @@ export const Question = ({ question, controls = false }: IQuestionProps) => {
 	const navigate = useNavigate();
 	const handleClickToQuestion = () => {
 		const path = `/question/${question.id}`;
-		navigate(path);
+		navigate(path, { replace: true });
 	};
 	return (
 		<section className='card__question'>

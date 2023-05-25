@@ -18,7 +18,7 @@ export const QuestionPage = () => {
 		const nextOrPrev = questionId && findNextOrPrevious(questionsState.questions, questionId, step);
 		if (nextOrPrev && nextOrPrev.id !== questionId) {
 			setCurrentQuestion(nextOrPrev);
-			navigate(`/question/${nextOrPrev.id}`);
+			navigate(`/question/${nextOrPrev.id}`, { replace: true });
 		}
 	};
 	useEffect(() => {
