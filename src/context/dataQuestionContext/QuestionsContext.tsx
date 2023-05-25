@@ -13,6 +13,7 @@ export interface QuestionsState {
 export interface QuestionContextProps {
 	questionsState: QuestionsState;
 	updateQuestion: (payload: IPayloadUpdateQuestion) => void;
+	resetQuestionsState: () => void;
 }
 
 // eslint-disable-next-line prettier/prettier

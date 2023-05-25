@@ -18,8 +18,11 @@ export const QuestionsProvider = ({ children }: IQuestionProviderProps) => {
 	const updateQuestion = (payload: IPayloadUpdateQuestion) => {
 		dispatch({ type: TYPE_QUESTIONS_CONTEXT_ACTIONS.UPDATE_QUESTION, payload });
 	};
+	const resetQuestionsState = () => {
+		dispatch({ type: TYPE_QUESTIONS_CONTEXT_ACTIONS.RESET_QUESTIONS_STATE });
+	};
 
-	const contextValue = useMemo(() => ({ questionsState, updateQuestion }), [questionsState]);
+	const contextValue = useMemo(() => ({ questionsState, updateQuestion, resetQuestionsState }), [questionsState]);
 
 	return <QuestionsContext.Provider value={contextValue}>{children}</QuestionsContext.Provider>;
 };
